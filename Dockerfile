@@ -1,7 +1,7 @@
 # build
 FROM node:18 as build
 
-LABEL maintainer="bmswens@gmail.com"
+LABEL maintainer="zlewis@clarityinnovates.com"
 EXPOSE 3000
 
 WORKDIR /app

@@ -1,0 +1,13 @@
+# docker-compose.yml
+version: '3.8'
+services:
+  dynamodb-local:
+    build: .
+    ports:
+      - "9911:8000"
+    volumes:
+      - ./docker/dynamodb:/home/dynamodb/data
+    environment:
+      - AWS_ACCESS_KEY_ID=dummy
+      - AWS_SECRET_ACCESS_KEY=dummy
+      - AWS_DEFAULT_REGION=local
