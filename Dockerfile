@@ -1,4 +1,4 @@
-# build
+# demo
 FROM node:18 as build
 
 LABEL maintainer="zlewis@clarityinnovates.com"
