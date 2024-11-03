@@ -1,16 +1,24 @@
-// Import the DynamoDBClient and PutItemCommand from AWS SDK v3
-const { DynamoDBClient, PutItemCommand } = require("@aws-sdk/client-dynamodb");
-const { v4: uuidv4 } = require("uuid"); // To generate unique IDs
 
-// Create DynamoDB client instance configured for local use with dummy credentials
-const client = new DynamoDBClient({
-  region: "local", // Any region is fine for local usage
-  endpoint: "http://localhost:9911", // Point to local DynamoDB instance on port 911
-  credentials: {
-    accessKeyId: "dummy", // Dummy access key
-    secretAccessKey: "dummy", // Dummy secret key
-  },
-});
+const { v4: uuidv4 } = require("uuid"); // To generate unique IDs
+const { DynamoDBClient, PutItemCommand } = require("@aws-sdk/client-dynamodb");
+
+ const saveDynamodb = async (key, data) => {
+    const client = new DynamoDBClient({
+        region: "local", // Any region is fine for local usage
+        endpoint: "http://localhost:9911", // Point to local DynamoDB instance on port 911
+        credentials: {
+          accessKeyId: "dummy", // Dummy access key
+          secretAccessKey: "dummy", // Dummy secret key
+        },
+      });
+      
+      try {
+        const command = new PutItemCommand(data);
+        await client.send(command);
+      } catch (error) {
+        console.error("Error adding data:", error);
+      }
+}
 
 // Sample data to add
 const sampleData = [
@@ -55,13 +63,8 @@ const addTestData = async () => {
       },
     };
 
-    try {
-      const command = new PutItemCommand(params);
-      await client.send(command);
-      console.log(`Data added for patient with dodid: ${record.dodid}`);
-    } catch (error) {
-      console.error("Error adding data:", error);
-    }
+    saveDynamodb(params)
+
   }
 };
 
