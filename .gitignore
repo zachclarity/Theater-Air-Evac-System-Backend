@@ -128,3 +128,7 @@ dist
 
 # custom
 data/
+database/dynamodb_local
+database/THIRD-PARTY-LICENSES.txt
+database/dynamodb_local_latest.zip
+database/shared-local-instance.db

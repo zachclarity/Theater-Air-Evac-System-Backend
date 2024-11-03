@@ -1,5 +1,5 @@
 
-const { DynamoDBClient, PutItemCommand } = require("@aws-sdk/client-dynamodb");
+const { DynamoDBClient, ScanCommand, PutItemCommand } = require("@aws-sdk/client-dynamodb");
 const { v4: uuidv4 } = require("uuid"); // To generate unique IDs
 
 
@@ -14,14 +14,15 @@ const client = new DynamoDBClient({
 
 
 async function getAll(req, res) {
-
-
+  
         const params = {
           TableName: "Patients",
         };
       
         try {
           const command = new ScanCommand(params); // Create the ScanCommand
+          console.log("Read All Records")
+          console.log(params)
           const data = await client.send(command); // Send command to DynamoDB
           console.log("Data in 'Patients' table:");
           res.json(JSON.stringify(data.Items, null, 2));
