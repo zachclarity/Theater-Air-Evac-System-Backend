@@ -1,18 +1,28 @@
-version: '3'
+# docker-compose.yml
+version: '3.8'
+
 services:
-  api:
-    build: ./
-    container_name: taes-api
-    restart: unless-stopped
-    ports:
-      - 3002:3000
   dynamodb-local:
-    build: .
+    image: amazon/dynamodb-local
+    container_name: dynamodb-local
     ports:
-      - "9911:8000"
+      - "9911:8000"  # Port mapping to access DynamoDB locally
+    command: "-jar DynamoDBLocal.jar -inMemory -sharedDb"
     volumes:
-      - ./docker/dynamodb:/home/dynamodb/data
+      - dynamodb_data:/data
+
+  node-app:
+    build:
+      context: .  
+    container_name: node-app
+    ports:
+      - "3000:3000"  
     environment:
-      - AWS_ACCESS_KEY_ID=dummy
-      - AWS_SECRET_ACCESS_KEY=dummy
-      - AWS_DEFAULT_REGION=local
+      - DYNAMODB_ENDPOINT=http://dynamodb-local:9911  
+    depends_on:
+      - dynamodb-local
+    volumes:
+      - .:/app  
+
+volumes:
+  dynamodb_data:
